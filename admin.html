@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neural Nexus Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+
+<link href="css/admin.css" rel="stylesheet"/></head>
+<body>
+<main class="shell">
+<header class="topbar">
+<a class="brand" href="index.html">NEURAL NEXUS</a>
+<a href="index.html">Back to website</a>
+</header>
+<section class="login-wrap" id="loginView">
+<form class="login-card" id="loginForm">
+<h1>Login</h1>
+<p>Sign in to your Neural Nexus account.</p>
+<label for="loginEmail">Email</label>
+<input autocomplete="username" id="loginEmail" required="" type="email"/>
+<label for="loginPassword">Password</label>
+<input autocomplete="current-password" id="loginPassword" required="" type="password"/>
+<button class="primary" style="width: 100%; margin-top: 24px;" type="submit">Sign in</button>
+<div class="error" id="loginError" role="alert"></div>
+<div class="switch-action">New here? <a href="#register" id="showRegister">Create an account</a></div>
+</form>
+<form class="login-card register-card" id="registerForm">
+<h1>Create Account</h1>
+<p>Create a user account to track your project enquiries.</p>
+<label for="registerName">Name</label>
+<input id="registerName" required="" type="text"/>
+<label for="registerEmail">Email</label>
+<input autocomplete="email" id="registerEmail" required="" type="email"/>
+<label for="registerPassword">Password</label>
+<input autocomplete="new-password" id="registerPassword" minlength="6" required="" type="password"/>
+<button class="primary" style="width: 100%; margin-top: 24px;" type="submit">Create account</button>
+<div class="error" id="registerError" role="alert"></div>
+<div class="switch-action">Already have an account? <a href="#login" id="showLogin">Sign in</a></div>
+</form>
+</section>
+<section class="dashboard" id="dashboardView">
+<div class="topbar" style="margin-top: 28px;">
+<div><h1>Lead Inbox</h1><p style="margin: 4px 0 0;">Manage project and consultation enquiries.</p></div>
+<button id="logoutButton" type="button">Log out</button>
+</div>
+<div class="summary">
+<div class="metric"><b id="totalLeads">0</b><span>Total leads</span></div>
+<div class="metric"><b id="newLeads">0</b><span>New leads</span></div>
+<div class="metric"><b id="contactedLeads">0</b><span>Contacted leads</span></div>
+<div class="metric"><b id="totalUsers">0</b><span>Registered users</span></div>
+</div>
+<div class="toolbar">
+<input id="leadSearch" placeholder="Search name, email, or project type" type="search"/>
+<button id="exportButton" type="button">Export CSV</button>
+</div>
+<div class="lead-list" id="leadList"></div>
+<h2 style="margin: 32px 0 16px; color: var(--cyan);">Registered Users</h2>
+<div class="lead-list" id="userList"></div>
+</section>
+<section class="dashboard" id="userView">
+<div class="topbar" style="margin-top: 28px;">
+<div><h1>My Account</h1><p style="margin: 4px 0 0;">Track your Neural Nexus project enquiries.</p></div>
+<button class="logout-button" type="button">Log out</button>
+</div>
+<div class="user-profile" id="userProfile"></div>
+<h2 style="color: var(--cyan);">My Enquiries</h2>
+<div class="lead-list" id="userLeadList"></div>
+</section>
+</main>
+
+<script src="js/admin.js"></script></body>
+</html>
