@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neural Nexus - AI/ML, Data Science &amp; Embedded Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+
+<link href="css/style.css" rel="stylesheet"/></head>
+<body>
+<div class="scroll-progress"></div>
+<div class="mouse-glow"></div>
+<!-- ==================== LOADER ==================== -->
+<div class="loader-container" id="loader">
+<div class="loader-logo">
+<img alt="Neural Nexus" id="loaderLogoImg" src="logo.png.png" style="width: 100%; height: 100%; object-fit: contain;"/>
+</div>
+<div class="loader-progress-bar">
+<div class="loader-progress-fill"></div>
+</div>
+<div class="loader-text">Initializing Neural Nexus...</div>
+</div>
+<!-- ==================== HEADER/NAV ==================== -->
+<header>
+<a class="logo" href="#" style="display: flex; align-items: center; gap: 10px; font-size: 18px; width: auto;">
+<img alt="Neural Nexus" src="logo.png.png" style="width: 40px; height: 40px; object-fit: contain;"/>
+<span>NEURAL NEXUS</span>
+</a>
+<nav id="nav">
+<a href="#services">Services</a>
+<a href="#programs">Programs</a>
+<a href="#projects">Projects</a>
+<a href="#pricing">Pricing</a>
+<a href="#contact">Contact</a>
+<a href="admin.html">Register / Login</a>
+</nav>
+<div class="hamburger" id="hamburger">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</header>
+<!-- ==================== BACK TO TOP ==================== -->
+<button class="back-to-top" id="backToTop"></button>
+<!-- ==================== HERO SECTION ==================== -->
+<section class="hero" id="hero">
+<canvas class="hero-canvas-bg" id="heroCanvas"></canvas>
+<div class="hero-content">
+<img alt="Neural Nexus Advanced AI Systems" class="hero-brand-logo" src="logo.png.png"/>
+<h1>Neural Nexus</h1>
+<p>AI-Driven Innovation Through Cutting-Edge Technology &amp; Research</p>
+<div class="hero-stats">
+<div class="stat fade-in">
+<div class="stat-number" id="statDomains">0</div>
+<div class="stat-label">Tech Domains</div>
+</div>
+<div class="stat fade-in">
+<div class="stat-number" id="statProjects">0</div>
+<div class="stat-label">Flagship Projects</div>
+</div>
+<div class="stat fade-in">
+<div class="stat-number" id="statYears">5</div>
+<div class="stat-label">Years Excellence</div>
+</div>
+</div>
+<div class="hero-cta">
+<a class="btn btn-primary" href="#contact">Get Started</a>
+<a class="btn" href="#services">Learn More</a>
+</div>
+<div class="scroll-indicator">↓</div>
+</div>
+</section>
+<!-- ==================== MARQUEE SECTION ==================== -->
+<section class="marquee-section">
+<div class="marquee" id="marquee">
+<div class="marquee-item">● AI/ML</div>
+<div class="marquee-item">● Data Science</div>
+<div class="marquee-item">● Embedded Systems</div>
+<div class="marquee-item">● IoT Solutions</div>
+<div class="marquee-item">● AI Home Automation</div>
+<div class="marquee-item">● Software Development</div>
+<div class="marquee-item">● AI/ML</div>
+<div class="marquee-item">● Data Science</div>
+<div class="marquee-item">● Embedded Systems</div>
+<div class="marquee-item">● IoT Solutions</div>
+<div class="marquee-item">● AI Home Automation</div>
+<div class="marquee-item">● Software Development</div>
+</div>
+</section>
+<!-- ==================== WHAT WE DO SECTION ==================== -->
+<section class="section" id="services">
+<h2 class="section-title fade-in">What We Do</h2>
+<div class="services-grid">
+<div class="service-card fade-in">
+<div class="service-card-content">
+<div class="service-icon">🤖</div>
+<h3>AI/ML Solutions</h3>
+<p>Advanced machine learning models and AI systems for intelligent automation and predictive analytics.</p>
+</div>
+</div>
+<div class="service-card fade-in">
+<div class="service-card-content">
+<div class="service-icon">📊</div>
+<h3>Data Science</h3>
+<p>Transform raw data into actionable insights with advanced analytics and visualization techniques.</p>
+</div>
+</div>
+<div class="service-card fade-in">
+<div class="service-card-content">
+<div class="service-icon">🔧</div>
+<h3>Embedded Systems</h3>
+<p>Custom embedded solutions for IoT devices, robotics, and real-time applications with precision engineering.</p>
+</div>
+</div>
+<div class="service-card fade-in">
+<div class="service-card-content">
+<div class="service-icon">🌐</div>
+<h3>IoT Solutions</h3>
+<p>Connected ecosystems that bridge the digital and physical worlds with smart devices and sensors.</p>
+</div>
+</div>
+<div class="service-card fade-in">
+<div class="service-card-content">
+<div class="service-icon">🔐</div>
+<h3>AI Home Automation</h3>
+<p>Intelligent home systems that automate lighting, climate, access, and energy use through sensors and AI-driven routines.</p>
+</div>
+</div>
+<div class="service-card fade-in">
+<div class="service-card-content">
+<div class="service-icon">💻</div>
+<h3>Software Development</h3>
+<p>Full-stack development from concept to deployment, building scalable and efficient applications.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== PROGRAMS SECTION ==================== -->
+<section class="section" id="programs">
+<h2 class="section-title fade-in">Our Programs</h2>
+<div class="programs-container">
+<div class="programs-list">
+<div class="program-item fade-in">
+<h4>⏫ Training &amp; Workshops</h4>
+<p>Hands-on training in AI, embedded systems, IoT, and data science. Learn from industry experts.</p>
+</div>
+<div class="program-item fade-in">
+<h4>📚 Academic Project Guidance</h4>
+<p>Support for student projects, research guidance, and technical consultation for academic excellence.</p>
+</div>
+<div class="program-item fade-in">
+<h4>🚀 Business Solutions</h4>
+<p>Custom solutions for enterprises: system integration, optimization, and digital transformation.</p>
+</div>
+</div>
+<div class="terminal-panel fade-in">
+<div class="terminal-header">
+<div class="terminal-dot red"></div>
+<div class="terminal-dot yellow"></div>
+<div class="terminal-dot green"></div>
+</div>
+<div class="terminal-output" id="terminalOutput">
+<div class="terminal-line"><span class="terminal-prompt">$</span> neural-nexus --init</div>
+<div class="terminal-line"><span class="terminal-prompt">$</span> initializing systems...</div>
+<div class="terminal-line" style="color: var(--accent-blue);">✓ AI Engine loaded</div>
+<div class="terminal-line" style="color: var(--accent-blue);">✓ Data Pipeline ready</div>
+<div class="terminal-line" style="color: var(--accent-blue);">✓ IoT Gateway online</div>
+<div class="terminal-line" style="color: var(--accent-blue);">✓ Security modules active</div>
+<div class="terminal-line"><span class="terminal-prompt">$</span> system status: optimal</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== PROJECTS SECTION ==================== -->
+<section class="section" id="projects">
+<h2 class="section-title fade-in">Projects</h2>
+<div aria-label="Filter projects" class="project-filters" role="group">
+<button class="filter-button active" data-filter="all" type="button">All</button>
+<button class="filter-button" data-filter="iot" type="button">IoT</button>
+<button class="filter-button" data-filter="data" type="button">Data</button>
+<button class="filter-button" data-filter="robotics" type="button">Robotics</button>
+<span class="saved-projects" id="savedProjects">0 projects saved</span>
+</div>
+<div class="projects-grid">
+<div class="project-card fade-in" data-abstract="A connected parking management platform that uses bay sensors to identify open spaces and publishes availability to drivers in real time." data-category="iot" data-details="Ultrasonic occupancy nodes|ESP32 edge controllers|Cloud event processing|Mobile web interface" data-outcomes="Live space availability|Mobile booking workflow|Sensor health monitoring">
+<div class="project-image">🅿️</div>
+<div class="project-content">
+<h3>Smart Parking System</h3>
+<p>IoT-enabled parking solution with real-time space detection and mobile app integration.</p>
+<div class="project-tags">
+<span class="tag">IoT</span>
+<span class="tag">Embedded</span>
+<span class="tag">ML</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="An AI-powered home automation system that learns household routines to coordinate lighting, climate, access, and energy use through one responsive dashboard." data-category="iot data" data-details="Wi-Fi and RF device gateway|AI routine recommendations|Occupancy and environmental sensors|Voice and mobile control" data-outcomes="Unified intelligent device controls|Personalized automation routines|Energy and occupancy insights">
+<div class="project-image">🏠</div>
+<div class="project-content">
+<h3>AI Home Automation</h3>
+<p>AI-powered home control for lighting, climate, access, energy monitoring, and personalized automation routines.</p>
+<div class="project-tags">
+<span class="tag">IoT</span>
+<span class="tag">AI</span>
+<span class="tag">Automation</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="An environmental intelligence platform that collects local sensor readings, validates incoming data, and turns it into actionable air-quality and climate trends." data-category="data" data-details="Particulate and gas sensors|Time-series storage|Data quality checks|Analytics dashboard" data-outcomes="Multi-sensor data capture|Air quality trend analysis|Cloud reporting dashboard">
+<div class="project-image">🌍</div>
+<div class="project-content">
+<h3>Environment Monitoring</h3>
+<p>Multi-sensor environmental monitoring for air quality, pollution, and climate tracking.</p>
+<div class="project-tags">
+<span class="tag">Sensors</span>
+<span class="tag">Data</span>
+<span class="tag">Analytics</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="A compact autonomous robot built to follow a marked route while combining sensor inputs to correct its steering and react to unexpected obstacles." data-category="robotics" data-details="IR sensor array|Motor driver control loop|PID path correction|Obstacle safety stop" data-outcomes="Adaptive path correction|Sensor fusion controls|Real-time obstacle response">
+<div class="project-image">🤖</div>
+<div class="project-content">
+<h3>Line Follower Robot</h3>
+<p>Autonomous robot system with sensor fusion and adaptive path correction algorithms.</p>
+<div class="project-tags">
+<span class="tag">Robotics</span>
+<span class="tag">CV</span>
+<span class="tag">Control</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="A distributed weather telemetry network that synchronizes field readings to the cloud and produces localized forecasts from historical patterns." data-category="iot data" data-details="Weather sensor nodes|MQTT telemetry|Cloud synchronization|Forecasting pipeline" data-outcomes="Distributed sensor network|Cloud synchronization|Predictive weather insights">
+<div class="project-image">🌡️</div>
+<div class="project-content">
+<h3>Weather Station Network</h3>
+<p>Distributed weather monitoring with cloud sync and predictive analytics integration.</p>
+<div class="project-tags">
+<span class="tag">IoT</span>
+<span class="tag">Cloud</span>
+<span class="tag">API</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="An AI-based autonomous robotic vehicle designed to navigate indoor and controlled outdoor routes using computer vision, distance sensing, and real-time decision making." data-category="robotics data" data-details="Camera-based lane and object detection|Ultrasonic and LiDAR distance sensing|Edge AI inference|Motor control and emergency stop" data-outcomes="Autonomous route navigation|Object and obstacle detection|Sensor-fusion safety controls">
+<div class="project-image">AI</div>
+<div class="project-content">
+<h3>AI Autonomous Robotic Vehicle</h3>
+<p>Vision-guided robotic vehicle with autonomous navigation, obstacle detection, and real-time sensor fusion.</p>
+<div class="project-tags">
+<span class="tag">AI</span>
+<span class="tag">Robotics</span>
+<span class="tag">Computer Vision</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="An AI-assisted wildlife monitoring system that identifies animals from camera feeds and sends timely alerts when protected or high-risk species are detected." data-category="data" data-details="Camera trap and live-stream input|Computer vision detection model|Species classification pipeline|Alert and sighting dashboard" data-outcomes="Automated animal detection|Faster field alerts|Searchable species sighting history">
+<div class="project-image">AI</div>
+<div class="project-content">
+<h3>Wild Animal Detection</h3>
+<p>Computer vision system for detecting and classifying wildlife from camera feeds.</p>
+<div class="project-tags">
+<span class="tag">AI</span>
+<span class="tag">Computer Vision</span>
+<span class="tag">Monitoring</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="A programmable robotic arm for repeatable pick, place, sorting, and demonstration workflows, controlled through a simple operator interface." data-category="robotics" data-details="Multi-axis servo control|Microcontroller motion sequences|Gripper end effector|Manual and pre-programmed modes" data-outcomes="Repeatable arm movements|Configurable task sequences|Safe operator control">
+<div class="project-image">ARM</div>
+<div class="project-content">
+<h3>Robotic Arm</h3>
+<p>Programmable multi-axis robotic arm for pick-and-place and automation tasks.</p>
+<div class="project-tags">
+<span class="tag">Robotics</span>
+<span class="tag">Embedded</span>
+<span class="tag">Automation</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="A streamlined attendance platform that records attendance through secure identification, maintains class records, and produces reports for staff and administrators." data-category="data" data-details="Face or QR-based identification|Attendance database|Role-based dashboard|Automated daily reports" data-outcomes="Faster attendance capture|Centralized student records|Exportable attendance reports">
+<div class="project-image">ID</div>
+<div class="project-content">
+<h3>Smart Attendance System</h3>
+<p>Digital attendance tracking with secure identification and real-time reporting.</p>
+<div class="project-tags">
+<span class="tag">AI</span>
+<span class="tag">Web App</span>
+<span class="tag">Database</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<div class="project-card fade-in" data-abstract="A dental AI support tool that analyzes dental images to highlight areas of interest, organize findings, and support clinicians during preliminary review." data-category="data" data-details="Dental image upload workflow|AI image analysis model|Annotated result view|Secure case record storage" data-outcomes="Faster image review|Consistent area-of-interest marking|Organized case documentation">
+<div class="project-image">AI</div>
+<div class="project-content">
+<h3>Dental AI</h3>
+<p>AI-assisted dental image analysis for preliminary review and organized case records.</p>
+<div class="project-tags">
+<span class="tag">AI</span>
+<span class="tag">Medical Imaging</span>
+<span class="tag">Analytics</span>
+</div>
+<button class="project-action" type="button">View case study</button>
+</div>
+</div>
+<p class="empty-projects" hidden="" id="emptyProjects">No projects match this filter yet.</p>
+</div>
+<div class="project-idea-cta fade-in">
+<p>Have a custom project idea?</p>
+<button class="btn btn-primary" id="customProjectIdea" type="button">Send Your Project Idea</button>
+</div>
+</section>
+<div aria-labelledby="modalProjectTitle" aria-modal="true" class="modal-backdrop" id="projectModal" role="dialog">
+<div class="project-modal">
+<button aria-label="Close case study" class="modal-close" id="closeProjectModal" type="button">×</button>
+<h3 id="modalProjectTitle"></h3>
+<p id="modalProjectDescription"></p>
+<h4>Project abstract</h4>
+<p id="modalProjectAbstract"></p>
+<h4>Technical details</h4>
+<ul class="project-outcomes project-details" id="modalProjectDetails"></ul>
+<h4>Key outcomes</h4>
+<ul class="project-outcomes" id="modalProjectOutcomes"></ul>
+<button class="btn btn-primary" id="enquireProject" type="button">Discuss this project</button>
+</div>
+</div>
+<!-- ==================== PRICING SECTION ==================== -->
+<section class="section" id="pricing">
+<h2 class="section-title fade-in">Project Pricing</h2>
+<div class="pricing-grid">
+<div class="pricing-card fade-in">
+<h3>Minor Projects</h3>
+<div class="pricing-price">₹5,000</div>
+<div class="pricing-period">Starting price for practical student projects</div>
+<ul class="pricing-features">
+<li>Basic AI/ML, Python, web, data, IoT, or database projects</li>
+<li>Project documentation and basic source code</li>
+<li>Project guidance, support, and demonstration</li>
+</ul>
+<button class="btn plan-button" type="button">Request Minor Project</button>
+</div>
+<div class="pricing-card featured fade-in">
+<div class="pricing-badge">Popular</div>
+<h3>Major Projects</h3>
+<div class="pricing-price">₹12,000</div>
+<div class="pricing-period">Starting price for final-year projects</div>
+<ul class="pricing-features">
+<li>AI/ML, deep learning, data science, CV, NLP, or IoT systems</li>
+<li>Full-stack apps, analytics, database, and API integration</li>
+<li>Documentation, source code, testing, viva support, and demonstration</li>
+</ul>
+<button class="btn btn-primary plan-button" type="button">Request Major Project</button>
+</div>
+<div class="pricing-card fade-in">
+<div class="pricing-badge">Popular</div>
+<h3>Websites &amp; Web Apps</h3>
+<div class="pricing-price">₹12,000</div>
+<div class="pricing-period">Starting price for custom websites and web apps</div>
+<ul class="pricing-features">
+<li>Business, portfolio, college, e-commerce, and dashboard websites</li>
+<li>Authentication, management systems, database, and API integration</li>
+<li>Payment gateways and custom admin panels</li>
+</ul>
+<button class="btn plan-button" type="button">Request Web App</button>
+</div>
+<div class="pricing-card fade-in">
+<div class="pricing-badge">Popular</div>
+<h3>Mobile Applications</h3>
+<div class="pricing-price">₹12,000</div>
+<div class="pricing-period">Starting price for Android and cross-platform apps</div>
+<ul class="pricing-features">
+<li>Android, Flutter, student, business, booking, and e-commerce apps</li>
+<li>API, database, authentication, notification, and dashboard integration</li>
+<li>Custom features built around your workflow</li>
+</ul>
+<button class="btn plan-button" type="button">Request Mobile App</button>
+</div>
+<div class="pricing-card fade-in">
+<h3>AI &amp; ML Solutions</h3>
+<div class="pricing-price">Custom</div>
+<div class="pricing-period">Price based on project complexity and features</div>
+<ul class="pricing-features">
+<li>Machine learning, deep learning, computer vision, and NLP</li>
+<li>Chatbots, RAG assistants, recommendations, and predictive analytics</li>
+<li>Object detection, generative AI, automation, and model integration</li>
+</ul>
+<button class="btn plan-button" type="button">Get AI/ML Quote</button>
+</div>
+<div class="pricing-card fade-in">
+<h3>Custom Development</h3>
+<div class="pricing-price">Quote</div>
+<div class="pricing-period">Your idea. Our technology.</div>
+<ul class="pricing-features">
+<li>Pricing reflects features, technology, AI needs, database, and UI/UX scope</li>
+<li>API integrations, authentication, security, hosting, and deployment</li>
+<li>Timeline, third-party services, and documentation requirements</li>
+</ul>
+<button class="btn plan-button" type="button">Get Custom Quote</button>
+</div>
+</div>
+<p class="fade-in" style="color: var(--text-muted); text-align: center; max-width: 720px; margin: 0 auto; line-height: 1.7;">
+            Final pricing changes according to the features and requirements of your project. Tell us your idea and we will prepare a customized project plan and quotation.
+        </p>
+</section>
+<!-- ==================== TESTIMONIALS SECTION ==================== -->
+<section class="section" id="testimonials">
+<h2 class="section-title fade-in">What Our Clients Say</h2>
+<div class="testimonials-container">
+<div class="testimonial-card active">
+<p class="testimonial-text">"Neural Nexus transformed our operations with their AI solutions. The team was professional, innovative, and delivered results beyond expectations."</p>
+<div class="testimonial-author">Sarah Johnson</div>
+<div class="testimonial-role">CEO, TechCorp Industries</div>
+</div>
+<div class="testimonial-card">
+<p class="testimonial-text">"Their embedded systems expertise was crucial to our IoT project. From concept to deployment, they handled everything with precision."</p>
+<div class="testimonial-author">Ahmed Hassan</div>
+<div class="testimonial-role">Product Manager, InnovateTech</div>
+</div>
+<div class="testimonial-card">
+<p class="testimonial-text">"The training programs provided excellent hands-on experience. Our team learned practical skills that we use daily in our development."</p>
+<div class="testimonial-author">Maria Garcia</div>
+<div class="testimonial-role">Lead Developer, CloudSystems</div>
+</div>
+</div>
+<div class="testimonial-nav">
+<div class="testimonial-dot active" onclick="changeTestimonial(0)"></div>
+<div class="testimonial-dot" onclick="changeTestimonial(1)"></div>
+<div class="testimonial-dot" onclick="changeTestimonial(2)"></div>
+</div>
+</section>
+<!-- ==================== FAQ SECTION ==================== -->
+<section class="section" id="faq">
+<h2 class="section-title fade-in">Frequently Asked Questions</h2>
+<div class="faq-container">
+<div class="faq-item">
+<div class="faq-question">
+<span>What technologies do you specialize in?</span>
+<span class="faq-toggle">▼</span>
+</div>
+<div class="faq-answer">
+                    We specialize in AI/ML, Data Science, Embedded Systems, IoT, AI Home Automation, and full-stack Software Development. Our team stays updated with the latest technologies and best practices in each domain.
+                </div>
+</div>
+<div class="faq-item">
+<div class="faq-question">
+<span>How long does a typical project take?</span>
+<span class="faq-toggle">▼</span>
+</div>
+<div class="faq-answer">
+                    Project timelines vary based on scope and complexity. Simple projects might take 4-8 weeks, while complex enterprise solutions can take 3-6 months or more. We'll provide a detailed timeline during the initial consultation.
+                </div>
+</div>
+<div class="faq-item">
+<div class="faq-question">
+<span>Do you offer training and mentorship?</span>
+<span class="faq-toggle">▼</span>
+</div>
+<div class="faq-answer">
+                    Yes! We offer comprehensive training programs and academic project guidance. Our experts are committed to helping students and professionals build practical technical skills.
+                </div>
+</div>
+<div class="faq-item">
+<div class="faq-question">
+<span>Can you work with our existing systems?</span>
+<span class="faq-toggle">▼</span>
+</div>
+<div class="faq-answer">
+                    Absolutely. We specialize in system integration and can work with your existing infrastructure. Our solutions are designed to seamlessly integrate with your current technology stack.
+                </div>
+</div>
+<div class="faq-item">
+<div class="faq-question">
+<span>What support do you provide after launch?</span>
+<span class="faq-toggle">▼</span>
+</div>
+<div class="faq-answer">
+                    We provide ongoing support based on your plan, including monitoring, bug fixes, performance optimization, and updates. Our support team is available via email, chat, or phone depending on your tier.
+                </div>
+</div>
+</div>
+</section>
+<!-- ==================== CONTACT SECTION ==================== -->
+<section class="contact-section" id="contact">
+<h2 class="section-title fade-in">Get In Touch</h2>
+<p class="fade-in" style="color: var(--text-muted); max-width: 600px; margin: 0 auto 0; font-size: 16px; margin-bottom: 40px;">
+            Ready to start your next project or have questions? We'd love to hear from you. Fill out the form below and we'll get back to you within 24 hours.
+        </p>
+<div class="contact-details fade-in">
+<div class="contact-detail">
+<span class="contact-detail-label">Phone</span>
+<a href="tel:+919567088095">+91 95670 88095</a>
+</div>
+<div class="contact-detail">
+<span class="contact-detail-label">Email</span>
+<a href="mailto:neuralnexus092@gmail.com">neuralnexus092@gmail.com</a>
+</div>
+<div class="contact-detail">
+<span class="contact-detail-label">Service area</span>
+<span>Kerala, Tamil Nadu &amp; Karnataka</span>
+</div>
+</div>
+<form class="contact-form" id="contactForm">
+<div class="form-success" id="formSuccess" role="status">Your enquiry has been saved in this browser.</div>
+<div class="form-group">
+<label for="name">Name</label>
+<input id="name" name="name" required="" type="text"/>
+<span class="form-error">Please enter your name</span>
+</div>
+<div class="form-group">
+<label for="email">Email</label>
+<input id="email" name="email" required="" type="email"/>
+<span class="form-error">Please enter a valid email</span>
+</div>
+<div class="form-options">
+<div class="form-group">
+<label for="requestType">Request type</label>
+<select id="requestType" name="requestType">
+<option value="Consultation">Consultation</option>
+<option value="Project delivery">Project delivery</option>
+<option value="Training">Training</option>
+</select>
+</div>
+<div class="form-group">
+<label for="timeline">Preferred timeline</label>
+<select id="timeline" name="timeline">
+<option value="Not decided">Not decided</option>
+<option value="This month">This month</option>
+<option value="1-3 months">1-3 months</option>
+<option value="3+ months">3+ months</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label for="message">Message</label>
+<textarea id="message" maxlength="10000" name="message" required=""></textarea>
+<div class="form-helper"><span>Include goals, constraints, and useful context.</span><span id="messageCount">0 / 10000</span></div>
+<span class="form-error">Please enter your message</span>
+</div>
+<button class="btn btn-primary" type="submit">Send Message</button>
+<div class="form-draft" id="formDraft"></div>
+</form>
+</section>
+<!-- ==================== FOOTER ==================== -->
+<footer>
+<div class="footer-content">
+<div class="social-links">
+<a aria-label="Instagram: nexus_embedded" href="https://www.instagram.com/nexus_embedded/#" rel="noopener noreferrer" target="_blank" title="Instagram: nexus_embedded"><i aria-hidden="true" class="fa-brands fa-instagram"></i></a>
+</div>
+<div class="footer-text">
+                © 2024 Neural Nexus. All rights reserved. | Kerala, Tamil Nadu &amp; Karnataka
+            </div>
+</div>
+</footer>
+
+<script src="js/main.js"></script></body>
+</html>
