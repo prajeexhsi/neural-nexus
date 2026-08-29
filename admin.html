@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Nexus Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a0e27; --panel: #1a1f3a; --cyan: #00d9ff; --blue: #0099ff; --text: #e0e0e0; --muted: #a0a0a0; --line: #2a3a5a; --danger: #ff6b6b; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; }
+        a { color: var(--cyan); text-decoration: none; }
+        .shell { max-width: 1200px; margin: 0 auto; padding: 28px 22px 48px; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+        .brand { font-size: 20px; font-weight: 700; color: var(--cyan); }
+        .login-wrap { min-height: calc(100vh - 100px); display: grid; place-items: center; }
+        .login-card { width: min(420px, 100%); padding: 32px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+        .register-card { display: none; }
+        .register-card.open { display: block; }
+        .login-card.hidden { display: none; }
+        .switch-action { margin-top: 20px; text-align: center; font-size: 13px; }
+        h1 { margin: 0 0 8px; font-size: 30px; color: var(--cyan); }
+        p { color: var(--muted); line-height: 1.6; }
+        label { display: block; margin: 20px 0 7px; font-size: 13px; font-weight: 600; }
+        input, select { width: 100%; padding: 12px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; font: inherit; }
+        input:focus, select:focus { outline: none; border-color: var(--cyan); }
+        button { border: 1px solid var(--cyan); border-radius: 4px; padding: 10px 15px; cursor: pointer; background: transparent; color: var(--cyan); font: 600 13px 'Space Grotesk', sans-serif; }
+        button:hover { background: rgba(0, 217, 255, 0.12); }
+        .primary { background: linear-gradient(135deg, var(--cyan), var(--blue)); color: var(--bg); }
+        .danger { border-color: var(--danger); color: var(--danger); }
+        .error { min-height: 20px; margin-top: 14px; color: var(--danger); font-size: 13px; }
+        .dashboard { display: none; }
+        .dashboard.open { display: block; }
+        .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 28px 0; }
+        .metric { padding: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+        .metric b { display: block; font: 700 28px 'JetBrains Mono', monospace; color: var(--cyan); }
+        .metric span { color: var(--muted); font-size: 12px; }
+        .toolbar { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin-bottom: 16px; }
+        .toolbar input { max-width: 340px; }
+        .lead-list { display: grid; gap: 14px; }
+        .lead { padding: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+        .lead-head, .lead-meta, .lead-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .lead-head { justify-content: space-between; }
+        .lead h2 { margin: 0; font-size: 18px; color: var(--cyan); }
+        .lead-meta { margin: 12px 0; color: var(--muted); font: 12px 'JetBrains Mono', monospace; }
+        .lead-message { margin: 14px 0; white-space: pre-wrap; color: var(--text); }
+        .lead-actions select { width: auto; min-width: 130px; padding: 8px; }
+        .empty { padding: 48px 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 6px; }
+        .user-profile { margin: 28px 0; padding: 22px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+        @media (max-width: 680px) { .summary { grid-template-columns: 1fr; } .toolbar, .topbar { align-items: stretch; flex-direction: column; } .toolbar input { max-width: none; } }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar">
+            <a class="brand" href="neural-nexus-website.html">NEURAL NEXUS</a>
+            <a href="neural-nexus-website.html">Back to website</a>
+        </header>
+
+        <section class="login-wrap" id="loginView">
+            <form class="login-card" id="loginForm">
+                <h1>Login</h1>
+                <p>Sign in to your Neural Nexus account.</p>
+                <label for="loginEmail">Email</label>
+                <input id="loginEmail" type="email" autocomplete="username" required>
+                <label for="loginPassword">Password</label>
+                <input id="loginPassword" type="password" autocomplete="current-password" required>
+                <button class="primary" type="submit" style="width: 100%; margin-top: 24px;">Sign in</button>
+                <div class="error" id="loginError" role="alert"></div>
+                <div class="switch-action">New here? <a href="#register" id="showRegister">Create an account</a></div>
+            </form>
+            <form class="login-card register-card" id="registerForm">
+                <h1>Create Account</h1>
+                <p>Create a user account to track your project enquiries.</p>
+                <label for="registerName">Name</label>
+                <input id="registerName" type="text" required>
+                <label for="registerEmail">Email</label>
+                <input id="registerEmail" type="email" autocomplete="email" required>
+                <label for="registerPassword">Password</label>
+                <input id="registerPassword" type="password" minlength="6" autocomplete="new-password" required>
+                <button class="primary" type="submit" style="width: 100%; margin-top: 24px;">Create account</button>
+                <div class="error" id="registerError" role="alert"></div>
+                <div class="switch-action">Already have an account? <a href="#login" id="showLogin">Sign in</a></div>
+            </form>
+        </section>
+
+        <section class="dashboard" id="dashboardView">
+            <div class="topbar" style="margin-top: 28px;">
+                <div><h1>Lead Inbox</h1><p style="margin: 4px 0 0;">Manage project and consultation enquiries.</p></div>
+                <button id="logoutButton" type="button">Log out</button>
+            </div>
+            <div class="summary">
+                <div class="metric"><b id="totalLeads">0</b><span>Total leads</span></div>
+                <div class="metric"><b id="newLeads">0</b><span>New leads</span></div>
+                <div class="metric"><b id="contactedLeads">0</b><span>Contacted leads</span></div>
+                <div class="metric"><b id="totalUsers">0</b><span>Registered users</span></div>
+            </div>
+            <div class="toolbar">
+                <input id="leadSearch" type="search" placeholder="Search name, email, or project type">
+                <button id="exportButton" type="button">Export CSV</button>
+            </div>
+            <div class="lead-list" id="leadList"></div>
+            <h2 style="margin: 32px 0 16px; color: var(--cyan);">Registered Users</h2>
+            <div class="lead-list" id="userList"></div>
+        </section>
+
+        <section class="dashboard" id="userView">
+            <div class="topbar" style="margin-top: 28px;">
+                <div><h1>My Account</h1><p style="margin: 4px 0 0;">Track your Neural Nexus project enquiries.</p></div>
+                <button class="logout-button" type="button">Log out</button>
+            </div>
+            <div class="user-profile" id="userProfile"></div>
+            <h2 style="color: var(--cyan);">My Enquiries</h2>
+            <div class="lead-list" id="userLeadList"></div>
+        </section>
+    </main>
+    <script>
+        const ADMIN_EMAIL = 'neuralnexus092@gmail.com';
+        const ADMIN_PASSWORD = 'neural-nexus-admin';
+        const loginView = document.getElementById('loginView');
+        const dashboardView = document.getElementById('dashboardView');
+        const userView = document.getElementById('userView');
+        const leadList = document.getElementById('leadList');
+        const userList = document.getElementById('userList');
+
+        function getUsers() {
+            const users = JSON.parse(localStorage.getItem('neuralNexusUsers') || '[]');
+            if (!users.some(user => user.email === ADMIN_EMAIL)) {
+                users.push({ id: 'admin', name: 'Neural Nexus Admin', email: ADMIN_EMAIL, password: ADMIN_PASSWORD, role: 'admin', createdAt: new Date().toISOString() });
+                localStorage.setItem('neuralNexusUsers', JSON.stringify(users));
+            }
+            return users;
+        }
+        function setUsers(users) { localStorage.setItem('neuralNexusUsers', JSON.stringify(users)); }
+        function getLeads() { return JSON.parse(localStorage.getItem('neuralNexusLeads') || '[]'); }
+        function setLeads(leads) { localStorage.setItem('neuralNexusLeads', JSON.stringify(leads)); }
+        function escapeHtml(value) { const node = document.createElement('div'); node.textContent = value || ''; return node.innerHTML; }
+
+        function renderLeads() {
+            const query = document.getElementById('leadSearch').value.trim().toLowerCase();
+            const leads = getLeads();
+            const filtered = leads.filter(lead => `${lead.name} ${lead.email} ${lead.requestType} ${lead.message}`.toLowerCase().includes(query));
+            document.getElementById('totalLeads').textContent = leads.length;
+            document.getElementById('newLeads').textContent = leads.filter(lead => lead.status === 'New').length;
+            document.getElementById('contactedLeads').textContent = leads.filter(lead => lead.status === 'Contacted').length;
+            const users = getUsers();
+            document.getElementById('totalUsers').textContent = users.filter(user => user.role === 'user').length;
+            const registeredUsers = users.filter(user => user.role === 'user');
+            userList.innerHTML = registeredUsers.length ? registeredUsers.map(user => `<article class="lead"><div class="lead-head"><h2>${escapeHtml(user.name)}</h2><span>${new Date(user.createdAt).toLocaleString()}</span></div><div class="lead-meta"><span>${escapeHtml(user.email)}</span><span>Registered user</span></div></article>`).join('') : '<div class="empty">No registered users yet.</div>';
+            if (!filtered.length) { leadList.innerHTML = '<div class="empty">No leads found yet.</div>'; return; }
+            leadList.innerHTML = filtered.map(lead => `
+                <article class="lead">
+                    <div class="lead-head"><h2>${escapeHtml(lead.name)}</h2><span>${new Date(lead.submittedAt).toLocaleString()}</span></div>
+                    <div class="lead-meta"><span>${escapeHtml(lead.email)}</span><span>${escapeHtml(lead.requestType)}</span><span>${escapeHtml(lead.timeline)}</span></div>
+                    <p class="lead-message">${escapeHtml(lead.message)}</p>
+                    <div class="lead-actions">
+                        <select aria-label="Lead status" data-status-id="${lead.id}">
+                            ${['New', 'Contacted', 'Qualified', 'Closed'].map(status => `<option ${lead.status === status ? 'selected' : ''}>${status}</option>`).join('')}
+                        </select>
+                        <a href="mailto:${encodeURIComponent(lead.email)}">Reply by email</a>
+                        <button class="danger" type="button" data-delete-id="${lead.id}">Delete</button>
+                    </div>
+                </article>`).join('');
+        }
+
+        function renderUserDashboard(user) {
+            document.getElementById('userProfile').innerHTML = `<h2 style="margin-top: 0; color: var(--cyan);">${escapeHtml(user.name)}</h2><p>${escapeHtml(user.email)}</p><p>Account created: ${new Date(user.createdAt).toLocaleDateString()}</p>`;
+            const myLeads = getLeads().filter(lead => lead.userId === user.id || lead.email.toLowerCase() === user.email.toLowerCase());
+            const target = document.getElementById('userLeadList');
+            if (!myLeads.length) { target.innerHTML = '<div class="empty">No enquiries yet. Submit a project request from the main website.</div>'; return; }
+            target.innerHTML = myLeads.map(lead => `<article class="lead"><div class="lead-head"><h2>${escapeHtml(lead.requestType)}</h2><span>${new Date(lead.submittedAt).toLocaleString()}</span></div><div class="lead-meta"><span>Status: ${escapeHtml(lead.status)}</span><span>${escapeHtml(lead.timeline)}</span></div><p class="lead-message">${escapeHtml(lead.message)}</p></article>`).join('');
+        }
+
+        function showAccount(user) {
+            loginView.style.display = 'none';
+            if (user.role === 'admin') { dashboardView.classList.add('open'); renderLeads(); }
+            else { userView.classList.add('open'); renderUserDashboard(user); }
+        }
+
+        function showLogin() {
+            dashboardView.classList.remove('open'); userView.classList.remove('open'); loginView.style.display = '';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', event => {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            const user = getUsers().find(account => account.email.toLowerCase() === email && account.password === password);
+            if (!user) { document.getElementById('loginError').textContent = 'Invalid email or password.'; return; }
+            sessionStorage.setItem('neuralNexusSession', JSON.stringify({ id: user.id, role: user.role }));
+            showAccount(user);
+        });
+        document.getElementById('registerForm').addEventListener('submit', event => {
+            event.preventDefault();
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim().toLowerCase();
+            const password = document.getElementById('registerPassword').value;
+            const users = getUsers();
+            if (users.some(user => user.email.toLowerCase() === email)) { document.getElementById('registerError').textContent = 'An account already uses this email.'; return; }
+            const user = { id: `user-${Date.now()}`, name, email, password, role: 'user', createdAt: new Date().toISOString() };
+            users.push(user); setUsers(users);
+            sessionStorage.setItem('neuralNexusSession', JSON.stringify({ id: user.id, role: user.role }));
+            showAccount(user);
+        });
+        document.getElementById('showRegister').addEventListener('click', event => { event.preventDefault(); document.getElementById('loginForm').classList.add('hidden'); document.getElementById('registerForm').classList.add('open'); });
+        document.getElementById('showLogin').addEventListener('click', event => { event.preventDefault(); document.getElementById('registerForm').classList.remove('open'); document.getElementById('loginForm').classList.remove('hidden'); });
+        document.getElementById('logoutButton').addEventListener('click', () => { sessionStorage.removeItem('neuralNexusSession'); showLogin(); });
+        document.querySelectorAll('.logout-button').forEach(button => button.addEventListener('click', () => { sessionStorage.removeItem('neuralNexusSession'); showLogin(); }));
+        document.getElementById('leadSearch').addEventListener('input', renderLeads);
+        leadList.addEventListener('change', event => {
+            const id = Number(event.target.dataset.statusId); if (!id) return;
+            const leads = getLeads(); const lead = leads.find(item => item.id === id); if (lead) { lead.status = event.target.value; setLeads(leads); renderLeads(); }
+        });
+        leadList.addEventListener('click', event => {
+            const id = Number(event.target.dataset.deleteId); if (!id) return;
+            setLeads(getLeads().filter(lead => lead.id !== id)); renderLeads();
+        });
+        document.getElementById('exportButton').addEventListener('click', () => {
+            const headers = ['Name', 'Email', 'Request type', 'Timeline', 'Message', 'Status', 'Submitted at'];
+            const quote = value => `"${String(value || '').replace(/"/g, '""')}"`;
+            const rows = getLeads().map(lead => [lead.name, lead.email, lead.requestType, lead.timeline, lead.message, lead.status, lead.submittedAt].map(quote).join(','));
+            const blob = new Blob([[headers.join(','), ...rows].join('\n')], { type: 'text/csv;charset=utf-8' });
+            const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'neural-nexus-leads.csv'; link.click(); URL.revokeObjectURL(link.href);
+        });
+        const savedSession = JSON.parse(sessionStorage.getItem('neuralNexusSession') || 'null');
+        if (savedSession) { const account = getUsers().find(user => user.id === savedSession.id && user.role === savedSession.role); if (account) showAccount(account); }
+    </script>
+</body>
+</html>
