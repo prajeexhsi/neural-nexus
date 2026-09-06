@@ -56,6 +56,8 @@
 <button id="exportButton" type="button">Export CSV</button>
 </div>
 <div class="lead-list" id="leadList"></div>
+<h2 class="section-heading">Payment Requests</h2>
+<div class="lead-list" id="paymentList"></div>
 <h2 style="margin: 32px 0 16px; color: var(--cyan);">Registered Users</h2>
 <div class="lead-list" id="userList"></div>
 </section>
@@ -65,6 +67,26 @@
 <button class="logout-button" type="button">Log out</button>
 </div>
 <div class="user-profile" id="userProfile"></div>
+<section aria-labelledby="paymentTitle" class="upi-payment" id="userPayment">
+<div class="upi-details">
+<span class="eyebrow">UPI payment</span>
+<h2 id="paymentTitle">Pay your project advance</h2>
+<p>Scan this QR code with any UPI app and pay the amount agreed for your project.</p>
+<p class="upi-id">UPI ID: <strong>prajeeshsiju101@okaxis</strong></p>
+<p class="payment-security">Never share your UPI PIN with anyone.</p>
+</div>
+<img alt="UPI QR code for Prajeesh Siju" class="upi-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&amp;data=upi%3A%2F%2Fpay%3Fpa%3Dprajeeshsiju101%40okaxis%26pn%3DPrajeesh%2520Siju%26cu%3DINR"/>
+<form class="proof-form" id="paymentProofForm">
+<label for="paidAmount">Amount paid (₹)</label>
+<input id="paidAmount" min="1" name="paidAmount" placeholder="Enter amount paid" required step="1" type="number"/>
+<label for="paymentProof">Upload payment screenshot</label>
+<input accept="image/png,image/jpeg,image/webp" id="paymentProof" required type="file"/>
+<p class="upload-hint">PNG, JPG, or WebP only — maximum 1 MB.</p>
+<img alt="Selected payment screenshot preview" class="proof-preview" id="paymentProofPreview" hidden/>
+<button class="primary" type="submit">Submit payment proof</button>
+<div aria-live="polite" class="payment-result" id="paymentResult" role="status"></div>
+</form>
+</section>
 <h2 style="color: var(--cyan);">My Enquiries</h2>
 <div class="lead-list" id="userLeadList"></div>
 </section>

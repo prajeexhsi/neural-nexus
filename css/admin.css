@@ -39,4 +39,25 @@
         .lead-actions select { width: auto; min-width: 130px; padding: 8px; }
         .empty { padding: 48px 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 6px; }
         .user-profile { margin: 28px 0; padding: 22px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
-        @media (max-width: 680px) { .summary { grid-template-columns: 1fr; } .toolbar, .topbar { align-items: stretch; flex-direction: column; } .toolbar input { max-width: none; } }
+        .section-heading { margin: 32px 0 16px; color: var(--cyan); }
+        .upi-payment { display: grid; grid-template-columns: 1fr minmax(190px, 260px); gap: 28px; align-items: center; margin: 28px 0 34px; padding: 28px; background: var(--panel); border: 1px solid var(--cyan); border-radius: 8px; }
+        .eyebrow { color: var(--cyan); font: 600 12px 'JetBrains Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
+        .upi-payment h2 { margin: 9px 0; color: var(--cyan); }
+        .upi-id { margin: 18px 0 4px; color: var(--text); }
+        .payment-security, .upload-hint { font-size: 12px; }
+        .upi-qr { width: 100%; max-width: 260px; padding: 10px; background: #fff; border-radius: 8px; }
+        .proof-form { grid-column: 1 / -1; max-width: 520px; }
+        .proof-form label { margin-top: 16px; }
+        .proof-form .primary { margin-top: 18px; }
+        .proof-preview { display: block; width: min(100%, 320px); max-height: 300px; margin-top: 14px; object-fit: contain; border: 1px solid var(--line); border-radius: 5px; }
+        .payment-result { min-height: 20px; margin-top: 12px; color: #4ade80; font-size: 13px; }
+        .live-project { border-left: 3px solid var(--cyan); }
+        .stage-tracker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 18px 0 12px; }
+        .stage-step { position: relative; padding-top: 26px; color: var(--muted); font-size: 11px; line-height: 1.25; }
+        .stage-step::before { content: ''; position: absolute; top: 0; left: 0; width: 14px; height: 14px; border: 2px solid var(--line); border-radius: 50%; background: var(--bg); z-index: 1; }
+        .stage-step:not(:last-child)::after { content: ''; position: absolute; top: 6px; left: 16px; width: calc(100% - 10px); height: 2px; background: var(--line); }
+        .stage-step.done, .stage-step.current { color: var(--cyan); }
+        .stage-step.done::before, .stage-step.current::before { border-color: var(--cyan); background: var(--cyan); }
+        .stage-step.done:not(:last-child)::after { background: var(--cyan); }
+        .tracking-updated { color: var(--muted); font-size: 11px; }
+        @media (max-width: 680px) { .summary { grid-template-columns: 1fr; } .toolbar, .topbar { align-items: stretch; flex-direction: column; } .toolbar input { max-width: none; } .upi-payment { grid-template-columns: 1fr; padding: 20px; } .upi-qr { max-width: 230px; } .stage-tracker { grid-template-columns: 1fr; gap: 8px; } .stage-step { padding: 0 0 0 26px; min-height: 22px; } .stage-step::before { top: 1px; } .stage-step:not(:last-child)::after { top: 17px; left: 6px; width: 2px; height: calc(100% - 4px); } }

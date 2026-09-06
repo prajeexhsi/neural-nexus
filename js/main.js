@@ -361,7 +361,7 @@
         messageField.addEventListener('input', updateMessageCount);
         updateMessageCount();
 
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             let isValid = true;
@@ -393,29 +393,27 @@
             }
 
             if (isValid) {
-                const activeSession = JSON.parse(sessionStorage.getItem('neuralNexusSession') || 'null');
                 const enquiry = {
                     name: name.value.trim(),
                     email: email.value.trim(),
                     requestType: document.getElementById('requestType').value,
                     timeline: document.getElementById('timeline').value,
-                    message: message.value.trim(),
-                    submittedAt: new Date().toISOString(),
-                    userId: activeSession && activeSession.role === 'user' ? activeSession.id : null
+                    message: message.value.trim()
                 };
-                localStorage.setItem('neuralNexusLatestEnquiry', JSON.stringify(enquiry));
-                const leads = JSON.parse(localStorage.getItem('neuralNexusLeads') || '[]');
-                leads.unshift({ id: Date.now(), status: 'New', ...enquiry });
-                localStorage.setItem('neuralNexusLeads', JSON.stringify(leads));
-                formSuccess.classList.add('show');
-                formDraft.textContent = `Saved ${enquiry.requestType.toLowerCase()} request for ${enquiry.name}.`;
-                formDraft.classList.add('show');
-                contactForm.reset();
-                updateMessageCount();
-
-                setTimeout(() => {
-                    formSuccess.classList.remove('show');
-                }, 5000);
+                const session = JSON.parse(sessionStorage.getItem('neuralNexusSession') || 'null');
+                try {
+                    const response = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {}) }, body: JSON.stringify(enquiry) });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.error || 'Unable to save your request.');
+                    formSuccess.classList.add('show');
+                    formDraft.textContent = `Saved ${enquiry.requestType.toLowerCase()} request for ${enquiry.name}.`;
+                    formDraft.classList.add('show');
+                    contactForm.reset(); updateMessageCount();
+                    setTimeout(() => formSuccess.classList.remove('show'), 5000);
+                } catch (error) {
+                    formDraft.textContent = error.message;
+                    formDraft.classList.add('show');
+                }
             }
         });
 

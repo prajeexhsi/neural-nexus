@@ -7,7 +7,6 @@
 - `js/main.js` — main website interactions
 - `js/admin.js` — admin/login/lead interactions
 
-Open `index.html` to run the frontend locally.
+Run `node server.js`, then open `http://localhost:5500`.
 
-The supplied admin authentication/data layer uses browser `localStorage` and `sessionStorage`.
-This is appropriate for a frontend demo/local setup, not production-grade authentication.
+Customer accounts, enquiries, payment proofs, and project stages are persisted in `data/store.json` (created automatically when the server starts). Do not commit that file; it contains customer data. Set `SESSION_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` environment variables before production use.
