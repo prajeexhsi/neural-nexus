@@ -400,12 +400,12 @@
                     timeline: document.getElementById('timeline').value,
                     message: message.value.trim()
                 };
-                const session = JSON.parse(sessionStorage.getItem('neuralNexusSession') || 'null');
                 try {
-                    const response = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {}) }, body: JSON.stringify(enquiry) });
-                    const contentType = response.headers.get('content-type') || '';
-                    const result = contentType.includes('application/json') ? await response.json() : { error: `The server returned ${response.status} instead of an API response.` };
-                    if (!response.ok) throw new Error(result.error || 'Unable to save your request.');
+                    const session = JSON.parse(sessionStorage.getItem('neuralNexusSession') || 'null');
+                    const leads = JSON.parse(localStorage.getItem('neuralNexusLeads') || '[]');
+                    const submittedAt = new Date().toISOString();
+                    leads.unshift({ id: Date.now(), userId: session?.user?.role === 'user' ? session.user.id : null, ...enquiry, status: 'New', stage: 'Quote requested', stageUpdatedAt: submittedAt, submittedAt });
+                    localStorage.setItem('neuralNexusLeads', JSON.stringify(leads));
                     formSuccess.classList.add('show');
                     formDraft.textContent = `Saved ${enquiry.requestType.toLowerCase()} request for ${enquiry.name}.`;
                     formDraft.classList.add('show');

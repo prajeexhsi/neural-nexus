@@ -9,14 +9,51 @@ let liveTrackingTimer = null;
 function getSession() { return JSON.parse(sessionStorage.getItem('neuralNexusSession') || 'null'); }
 function setSession(session) { sessionStorage.setItem('neuralNexusSession', JSON.stringify(session)); }
 function escapeHtml(value) { const node = document.createElement('div'); node.textContent = value || ''; return node.innerHTML; }
+const ADMIN_EMAIL = 'neuralnexus092@gmail.com';
+const ADMIN_PASSWORD = 'neural-nexus-admin';
+function getUsers() {
+  const users = JSON.parse(localStorage.getItem('neuralNexusUsers') || '[]');
+  if (!users.some(user => user.email === ADMIN_EMAIL)) {
+    users.push({ id: 'admin', name: 'Neural Nexus Admin', email: ADMIN_EMAIL, password: ADMIN_PASSWORD, role: 'admin', createdAt: new Date().toISOString() });
+    localStorage.setItem('neuralNexusUsers', JSON.stringify(users));
+  }
+  return users;
+}
+function setUsers(users) { localStorage.setItem('neuralNexusUsers', JSON.stringify(users)); }
+function getLeads() { return JSON.parse(localStorage.getItem('neuralNexusLeads') || '[]'); }
+function setLeads(leads) { localStorage.setItem('neuralNexusLeads', JSON.stringify(leads)); }
+function getPayments() { return JSON.parse(localStorage.getItem('neuralNexusPayments') || '[]'); }
+function setPayments(payments) { localStorage.setItem('neuralNexusPayments', JSON.stringify(payments)); }
+function publicUser(user) { return { id: user.id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt }; }
+function currentUser() { const saved = getSession()?.user; return saved && getUsers().find(user => user.id === saved.id) || null; }
+function fail(message) { throw new Error(message); }
 async function api(url, options = {}) {
-  const session = getSession();
-  const response = await fetch(url, { ...options, headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {}), ...options.headers } });
-  if (response.status === 204) return null;
-  const contentType = response.headers.get('content-type') || '';
-  const data = contentType.includes('application/json') ? await response.json() : { error: `The server returned ${response.status} instead of an API response.` };
-  if (!response.ok) throw new Error(data.error || 'Request failed.');
-  return data;
+  const method = options.method || 'GET'; const body = options.body ? JSON.parse(options.body) : {}; const user = currentUser();
+  if (method === 'POST' && url === '/api/auth/register') {
+    const name = String(body.name || '').trim(), email = String(body.email || '').trim().toLowerCase(), password = String(body.password || '');
+    if (!name || !/^\S+@\S+\.\S+$/.test(email) || password.length < 6) return fail('Enter a name, valid email, and password of at least 6 characters.');
+    const users = getUsers(); if (users.some(account => account.email === email)) return fail('An account already uses this email.');
+    const account = { id: `user-${Date.now()}`, name, email, password, role: 'user', createdAt: new Date().toISOString() }; users.push(account); setUsers(users); return { user: publicUser(account) };
+  }
+  if (method === 'POST' && url === '/api/auth/login') {
+    const account = getUsers().find(item => item.email === String(body.email || '').trim().toLowerCase() && item.password === String(body.password || ''));
+    if (!account) return fail('Invalid email or password.'); return { user: publicUser(account) };
+  }
+  if (method === 'GET' && url === '/api/session') { if (!user) return fail('Please sign in first.'); return { user: publicUser(user) }; }
+  if (method === 'POST' && url === '/api/leads') {
+    const name = String(body.name || '').trim(), email = String(body.email || '').trim().toLowerCase(), message = String(body.message || '').trim();
+    if (!name || !/^\S+@\S+\.\S+$/.test(email) || !message) return fail('Name, email, and message are required.');
+    const submittedAt = new Date().toISOString(), lead = { id: Date.now(), userId: user?.role === 'user' ? user.id : null, name, email, requestType: String(body.requestType || 'Consultation'), timeline: String(body.timeline || 'Not specified'), message, status: 'New', stage: 'Quote requested', stageUpdatedAt: submittedAt, submittedAt };
+    const leads = getLeads(); leads.unshift(lead); setLeads(leads); return { lead };
+  }
+  if (method === 'GET' && url === '/api/leads') { if (!user) return fail('Please sign in first.'); const leads = getLeads(); return { leads: user.role === 'admin' ? leads : leads.filter(lead => lead.userId === user.id || lead.email === user.email) }; }
+  const leadMatch = url.match(/^\/api\/leads\/(\d+)$/);
+  if (leadMatch && method === 'PATCH') { if (user?.role !== 'admin') return fail('Admin access required.'); const leads = getLeads(), lead = leads.find(item => item.id === Number(leadMatch[1])); if (!lead) return fail('Project not found.'); if (body.status) lead.status = String(body.status); if (stages.includes(body.stage) && lead.stage !== body.stage) { lead.stage = body.stage; lead.stageUpdatedAt = new Date().toISOString(); } setLeads(leads); return { lead }; }
+  if (leadMatch && method === 'DELETE') { if (user?.role !== 'admin') return fail('Admin access required.'); setLeads(getLeads().filter(item => item.id !== Number(leadMatch[1]))); return null; }
+  if (method === 'GET' && url === '/api/users') { if (user?.role !== 'admin') return fail('Admin access required.'); return { users: getUsers().filter(account => account.role === 'user').map(publicUser) }; }
+  if (method === 'POST' && url === '/api/payments') { if (!user || user.role !== 'user') return fail('Please sign in first.'); const amount = Number(body.amount), proofData = String(body.proofData || ''); if (!Number.isFinite(amount) || amount <= 0 || !/^data:image\/(png|jpeg|webp);base64,/i.test(proofData)) return fail('Enter the paid amount and upload a valid image.'); const payment = { id: `UPI-${Date.now()}`, userId: user.id, name: user.name, email: user.email, amount, proofName: String(body.proofName || 'payment-proof'), proofData, submittedAt: new Date().toISOString() }; const payments = getPayments(); payments.unshift(payment); setPayments(payments); return { payment: { ...payment, proofData: undefined } }; }
+  if (method === 'GET' && url === '/api/payments') { if (user?.role !== 'admin') return fail('Admin access required.'); return { payments: getPayments() }; }
+  return fail('Request not found.');
 }
 
 async function renderLeads() {
@@ -102,4 +139,4 @@ leadList.addEventListener('click', async event => {
   const id = event.target.dataset.deleteId; if (!id) return;
   try { await api(`/api/leads/${id}`, { method: 'DELETE' }); await renderLeads(); } catch (error) { alert(error.message); }
 });
-(async () => { const session = getSession(); if (!session?.token) return; try { const { user } = await api('/api/session'); await showAccount(user); } catch { sessionStorage.removeItem('neuralNexusSession'); } })();
+(async () => { const session = getSession(); if (!session?.user) return; try { const { user } = await api('/api/session'); await showAccount(user); } catch { sessionStorage.removeItem('neuralNexusSession'); } })();
