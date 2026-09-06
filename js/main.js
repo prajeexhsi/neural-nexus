@@ -403,7 +403,8 @@
                 const session = JSON.parse(sessionStorage.getItem('neuralNexusSession') || 'null');
                 try {
                     const response = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {}) }, body: JSON.stringify(enquiry) });
-                    const result = await response.json();
+                    const contentType = response.headers.get('content-type') || '';
+                    const result = contentType.includes('application/json') ? await response.json() : { error: `The server returned ${response.status} instead of an API response.` };
                     if (!response.ok) throw new Error(result.error || 'Unable to save your request.');
                     formSuccess.classList.add('show');
                     formDraft.textContent = `Saved ${enquiry.requestType.toLowerCase()} request for ${enquiry.name}.`;

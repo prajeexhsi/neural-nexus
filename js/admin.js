@@ -13,7 +13,8 @@ async function api(url, options = {}) {
   const session = getSession();
   const response = await fetch(url, { ...options, headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {}), ...options.headers } });
   if (response.status === 204) return null;
-  const data = await response.json();
+  const contentType = response.headers.get('content-type') || '';
+  const data = contentType.includes('application/json') ? await response.json() : { error: `The server returned ${response.status} instead of an API response.` };
   if (!response.ok) throw new Error(data.error || 'Request failed.');
   return data;
 }
