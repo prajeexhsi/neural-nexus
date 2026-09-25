@@ -1,2 +1,6 @@
 data/store.json
 data/store.json.tmp
+
+node_modules/
+.env
+.env.local
