@@ -8,9 +8,15 @@ const dataDir = path.join(root, 'data');
 const dataFile = path.join(dataDir, 'store.json');
 const port = Number(process.env.PORT || 5500);
 const secret = process.env.SESSION_SECRET || 'change-this-session-secret-before-production';
-const adminEmail = process.env.ADMIN_EMAIL || 'neuralnexus092@gmail.com';
-const adminPassword = process.env.ADMIN_PASSWORD || 'neural-nexus-admin';
+const adminEmail = process.env.ADMIN_EMAIL || 'admin@gmail.com';
+const adminPassword = process.env.ADMIN_PASSWORD || 'Neural@123';
 const stages = ['Quote requested', 'Planning', 'In progress', 'Testing', 'Completed'];
+function normalizeProject(lead) {
+  const stageIndex = Math.max(0, stages.indexOf(lead.stage));
+  if (!Number.isFinite(Number(lead.progress))) lead.progress = Math.round((stageIndex / (stages.length - 1)) * 100);
+  if (!Array.isArray(lead.statusHistory)) lead.statusHistory = [{ stage: lead.stage || stages[0], progress: lead.progress, note: lead.statusNote || 'Project request received.', updatedAt: lead.stageUpdatedAt || lead.submittedAt }];
+  return lead;
+}
 
 function hashPassword(password, salt = crypto.randomBytes(16).toString('hex')) {
   return `${salt}:${crypto.scryptSync(password, salt, 64).toString('hex')}`;
@@ -24,7 +30,16 @@ function passwordMatches(password, stored) {
 function ensureStore() {
   fs.mkdirSync(dataDir, { recursive: true });
   if (!fs.existsSync(dataFile)) {
-    writeDb({ users: [{ id: 'admin', name: 'Neural Nexus Admin', email: adminEmail, passwordHash: hashPassword(adminPassword), role: 'admin', createdAt: new Date().toISOString() }], leads: [], payments: [] });
+    writeDb({ users: [{ id: 'admin', username: 'admin@gmail.com', name: 'Neural Nexus Admin', email: adminEmail, passwordHash: hashPassword(adminPassword), role: 'admin', createdAt: new Date().toISOString() }], leads: [], payments: [] });
+  } else {
+    const db = readDb();
+    const adminUser = db.users.find(user => user.role === 'admin');
+    if (adminUser) {
+      adminUser.username = 'admin@gmail.com';
+      adminUser.email = adminEmail;
+      adminUser.passwordHash = hashPassword(adminPassword);
+      writeDb(db);
+    }
   }
 }
 function readDb() { ensureStore(); return JSON.parse(fs.readFileSync(dataFile, 'utf8')); }
@@ -82,8 +97,13 @@ const server = http.createServer(async (req, res) => {
         db.users.push(account); writeDb(db); return send(res, 201, { user: publicUser(account), token: signSession(account) });
       }
       if (req.method === 'POST' && url.pathname === '/api/auth/login') {
-        const email = String(body.email || '').trim().toLowerCase(); const account = db.users.find(item => item.email === email);
-        if (!account || !passwordMatches(String(body.password || ''), account.passwordHash)) return send(res, 401, { error: 'Invalid email or password.' });
+        const loginValue = String(body.email || body.username || '').trim().toLowerCase();
+        const account = db.users.find(item => {
+          const email = String(item.email || '').trim().toLowerCase();
+          const username = String(item.username || '').trim().toLowerCase();
+          return (email === loginValue || username === loginValue || email.split('@')[0] === loginValue) && passwordMatches(String(body.password || ''), item.passwordHash);
+        });
+        if (!account) return send(res, 401, { error: 'Invalid username/email or password.' });
         return send(res, 200, { user: publicUser(account), token: signSession(account) });
       }
       if (req.method === 'GET' && url.pathname === '/api/session') { if (!requireUser(user, res)) return; return send(res, 200, { user: publicUser(user) }); }
@@ -91,12 +111,12 @@ const server = http.createServer(async (req, res) => {
         const name = String(body.name || '').trim(); const email = String(body.email || '').trim().toLowerCase(); const message = String(body.message || '').trim();
         if (!name || !/^\S+@\S+\.\S+$/.test(email) || !message) return send(res, 400, { error: 'Name, email, and message are required.' });
         const submittedAt = new Date().toISOString();
-        const lead = { id: Date.now(), userId: user?.role === 'user' ? user.id : null, name, email, requestType: String(body.requestType || 'Consultation'), timeline: String(body.timeline || 'Not specified'), message, status: 'New', stage: 'Quote requested', stageUpdatedAt: submittedAt, submittedAt };
+        const lead = { id: Date.now(), userId: user?.role === 'user' ? user.id : null, name, email, requestType: String(body.requestType || 'Consultation'), timeline: String(body.timeline || 'Not specified'), message, status: 'New', stage: 'Quote requested', progress: 0, statusNote: 'Project request received. We will review it shortly.', statusHistory: [{ stage: 'Quote requested', progress: 0, note: 'Project request received. We will review it shortly.', updatedAt: submittedAt }], stageUpdatedAt: submittedAt, submittedAt };
         db.leads.unshift(lead); writeDb(db); return send(res, 201, { lead });
       }
-      if (req.method === 'GET' && url.pathname === '/api/leads') { if (!requireUser(user, res)) return; const leads = user.role === 'admin' ? db.leads : db.leads.filter(lead => lead.userId === user.id || lead.email === user.email); return send(res, 200, { leads }); }
+      if (req.method === 'GET' && url.pathname === '/api/leads') { if (!requireUser(user, res)) return; const leads = (user.role === 'admin' ? db.leads : db.leads.filter(lead => lead.userId === user.id || lead.email === user.email)).map(normalizeProject); return send(res, 200, { leads }); }
       const leadMatch = url.pathname.match(/^\/api\/leads\/(\d+)$/);
-      if (leadMatch && req.method === 'PATCH') { if (!requireAdmin(user, res)) return; const lead = db.leads.find(item => item.id === Number(leadMatch[1])); if (!lead) return send(res, 404, { error: 'Project not found.' }); if (body.status) lead.status = String(body.status); if (stages.includes(body.stage) && lead.stage !== body.stage) { lead.stage = body.stage; lead.stageUpdatedAt = new Date().toISOString(); } writeDb(db); return send(res, 200, { lead }); }
+      if (leadMatch && req.method === 'PATCH') { if (!requireAdmin(user, res)) return; const lead = db.leads.find(item => item.id === Number(leadMatch[1])); if (!lead) return send(res, 404, { error: 'Project not found.' }); normalizeProject(lead); if (body.status) lead.status = String(body.status); const nextStage = stages.includes(body.stage) ? body.stage : lead.stage, nextProgress = Number.isFinite(Number(body.progress)) ? Math.max(0, Math.min(100, Math.round(Number(body.progress)))) : lead.progress, nextNote = typeof body.statusNote === 'string' ? body.statusNote.trim().slice(0, 500) : lead.statusNote; if (nextStage !== lead.stage || nextProgress !== lead.progress || nextNote !== lead.statusNote) { const updatedAt = new Date().toISOString(); lead.stage = nextStage; lead.progress = nextProgress; lead.statusNote = nextNote; lead.stageUpdatedAt = updatedAt; lead.statusHistory.unshift({ stage: nextStage, progress: nextProgress, note: nextNote || 'Project status updated.', updatedAt }); lead.statusHistory = lead.statusHistory.slice(0, 10); } writeDb(db); return send(res, 200, { lead }); }
       if (leadMatch && req.method === 'DELETE') { if (!requireAdmin(user, res)) return; db.leads = db.leads.filter(item => item.id !== Number(leadMatch[1])); writeDb(db); return send(res, 204, {}); }
       if (req.method === 'GET' && url.pathname === '/api/users') { if (!requireAdmin(user, res)) return; return send(res, 200, { users: db.users.filter(account => account.role === 'user').map(publicUser) }); }
       if (req.method === 'POST' && url.pathname === '/api/payments') {
