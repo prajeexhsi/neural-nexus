@@ -31,7 +31,7 @@ function normalizeProject(lead) { const stageIndex = Math.max(0, stages.indexOf(
 function publicUser(user) { return { id: user.id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt }; }
 function currentUser() { const saved = getSession()?.user; return saved && getUsers().find(user => user.id === saved.id) || null; }
 function fail(message) { throw new Error(message); }
-async function api(url, options = {}) {
+async function localApi(url, options = {}) {
   const method = options.method || 'GET'; const body = options.body ? JSON.parse(options.body) : {}; const user = currentUser();
   if (method === 'POST' && url === '/api/auth/register') {
     const name = String(body.name || '').trim(), email = String(body.email || '').trim().toLowerCase(), password = String(body.password || '');
@@ -63,6 +63,18 @@ async function api(url, options = {}) {
   if (method === 'POST' && url === '/api/payments') { if (!user || user.role !== 'user') return fail('Please sign in first.'); const amount = Number(body.amount), proofData = String(body.proofData || ''); if (!Number.isFinite(amount) || amount <= 0 || !/^data:image\/(png|jpeg|webp);base64,/i.test(proofData)) return fail('Enter the paid amount and upload a valid image.'); const payment = { id: `UPI-${Date.now()}`, userId: user.id, name: user.name, email: user.email, amount, proofName: String(body.proofName || 'payment-proof'), proofData, submittedAt: new Date().toISOString() }; const payments = getPayments(); payments.unshift(payment); setPayments(payments); return { payment: { ...payment, proofData: undefined } }; }
   if (method === 'GET' && url === '/api/payments') { if (user?.role !== 'admin') return fail('Admin access required.'); return { payments: getPayments() }; }
   return fail('Request not found.');
+}
+
+async function api(url, options = {}) {
+  const session = getSession();
+  const headers = { ...(options.headers || {}) };
+  if (options.body) headers['Content-Type'] = 'application/json';
+  if (session?.token) headers.Authorization = `Bearer ${session.token}`;
+
+  const response = await fetch(url, { ...options, headers });
+  const result = response.status === 204 ? null : await response.json();
+  if (!response.ok) throw new Error(result?.error || 'Request failed.');
+  return result;
 }
 
 async function renderLeads() {

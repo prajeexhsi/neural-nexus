@@ -1393,7 +1393,7 @@
                     <div class="stat-label">Flagship Projects</div>
                 </div>
                 <div class="stat fade-in">
-                    <div class="stat-number" id="statYears">5</div>
+                    <div class="stat-number" id="statYears">3</div>
                     <div class="stat-label">Years Excellence</div>
                 </div>
             </div>
@@ -1464,6 +1464,20 @@
             </div>
             <div class="service-card fade-in">
                 <div class="service-card-content">
+                    <div class="service-icon">📹</div>
+                    <h3>CCTV Installation</h3>
+                    <p>Professional CCTV planning and installation with camera placement, remote monitoring, recording systems, and secure network setup.</p>
+                </div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-card-content">
+                    <div class="service-icon">🖨️</div>
+                    <h3>3D Printing</h3>
+                    <p>Custom 3D printing for prototypes, enclosures, replacement parts, educational models, and product concepts.</p>
+                </div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-card-content">
                     <div class="service-icon">💻</div>
                     <h3>Software Development</h3>
                     <p>Full-stack development from concept to deployment, building scalable and efficient applications.</p>
@@ -1489,6 +1503,18 @@
                     <h4>🚀 Business Solutions</h4>
                     <p>Custom solutions for enterprises: system integration, optimization, and digital transformation.</p>
                 </div>
+                <div class="program-item fade-in">
+                    <h4>🏠 Home Automation &amp; IoT</h4>
+                    <p>Practical learning and implementation for smart home devices, sensors, automation routines, and connected control systems.</p>
+                </div>
+                <div class="program-item fade-in">
+                    <h4>📹 CCTV &amp; Smart Security</h4>
+                    <p>Security camera planning, installation basics, remote monitoring, networking, recording, and intelligent security workflows.</p>
+                </div>
+                <div class="program-item fade-in">
+                    <h4>🖨️ 3D Printing &amp; Prototyping</h4>
+                    <p>Design and produce useful prototypes, enclosures, models, and custom parts for academic, business, and engineering projects.</p>
+                </div>
             </div>
             <div class="terminal-panel fade-in">
                 <div class="terminal-header">
@@ -1498,12 +1524,13 @@
                 </div>
                 <div class="terminal-output" id="terminalOutput">
                     <div class="terminal-line"><span class="terminal-prompt">$</span> neural-nexus --init</div>
-                    <div class="terminal-line"><span class="terminal-prompt">$</span> initializing systems...</div>
-                    <div class="terminal-line" style="color: var(--accent-blue);">✓ AI Engine loaded</div>
+                    <div class="terminal-line"><span class="terminal-prompt">$</span> loading innovation modules...</div>
+                    <div class="terminal-line" style="color: var(--accent-blue);">✓ AI &amp; ML Engine loaded</div>
                     <div class="terminal-line" style="color: var(--accent-blue);">✓ Data Pipeline ready</div>
                     <div class="terminal-line" style="color: var(--accent-blue);">✓ IoT Gateway online</div>
-                    <div class="terminal-line" style="color: var(--accent-blue);">✓ Security modules active</div>
-                    <div class="terminal-line"><span class="terminal-prompt">$</span> system status: optimal</div>
+                    <div class="terminal-line" style="color: var(--accent-blue);">✓ Home Automation configured</div>
+                    <div class="terminal-line" style="color: var(--accent-blue);">✓ CCTV &amp; 3D Printing services ready</div>
+                    <div class="terminal-line"><span class="terminal-prompt">$</span> system status: ready for deployment</div>
                 </div>
             </div>
         </div>
@@ -1898,6 +1925,7 @@
         <div class="footer-content">
             <div class="social-links">
                 <a href="https://www.instagram.com/nexus_embedded/#" target="_blank" rel="noopener noreferrer" title="Instagram: nexus_embedded" aria-label="Instagram: nexus_embedded"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+                <a href="https://wa.me/qr/NDHF2AKAIDBWK1" target="_blank" rel="noopener noreferrer" title="Chat with us on WhatsApp" aria-label="Chat with Neural Nexus on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
             </div>
             <div class="footer-text">
                 &copy; 2024 Neural Nexus. All rights reserved. | Kerala, Tamil Nadu &amp; Karnataka
@@ -2032,9 +2060,9 @@
                     const statNumber = entry.target.querySelector('.stat-number');
                     if (!statNumber.dataset.animated) {
                         if (entry.target.id === 'statDomains' || entry.target.parentElement.id === 'statDomains') {
-                            animateCounter(document.getElementById('statDomains'), 6);
+                            animateCounter(document.getElementById('statDomains'), 20, '+');
                         } else if (entry.target.id === 'statProjects' || entry.target.parentElement.id === 'statProjects') {
-                            animateCounter(document.getElementById('statProjects'), 5);
+                            animateCounter(document.getElementById('statProjects'), 50, '+');
                         }
                         statNumber.dataset.animated = 'true';
                     }
@@ -2046,8 +2074,8 @@
 
         // Animate counters on load if visible
         setTimeout(() => {
-            animateCounter(document.getElementById('statDomains'), 6);
-            animateCounter(document.getElementById('statProjects'), 5);
+            animateCounter(document.getElementById('statDomains'), 20, '+');
+            animateCounter(document.getElementById('statProjects'), 50, '+');
         }, 500);
 
         // ==================== SCROLL FADE ANIMATIONS ==================== 

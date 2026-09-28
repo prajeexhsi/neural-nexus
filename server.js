@@ -31,15 +31,6 @@ function ensureStore() {
   fs.mkdirSync(dataDir, { recursive: true });
   if (!fs.existsSync(dataFile)) {
     writeDb({ users: [{ id: 'admin', username: 'admin@gmail.com', name: 'Neural Nexus Admin', email: adminEmail, passwordHash: hashPassword(adminPassword), role: 'admin', createdAt: new Date().toISOString() }], leads: [], payments: [] });
-  } else {
-    const db = readDb();
-    const adminUser = db.users.find(user => user.role === 'admin');
-    if (adminUser) {
-      adminUser.username = 'admin@gmail.com';
-      adminUser.email = adminEmail;
-      adminUser.passwordHash = hashPassword(adminPassword);
-      writeDb(db);
-    }
   }
 }
 function readDb() { ensureStore(); return JSON.parse(fs.readFileSync(dataFile, 'utf8')); }

@@ -99,16 +99,16 @@
         drawHeroCanvas();
 
         // ==================== STAT COUNTERS ==================== 
-        function animateCounter(element, target, duration = 2000) {
+        function animateCounter(element, target, suffix = '', duration = 2000) {
             let current = 0;
             const increment = target / (duration / 16);
             const timer = setInterval(() => {
                 current += increment;
                 if (current >= target) {
-                    element.textContent = target;
+                    element.textContent = `${target}${suffix}`;
                     clearInterval(timer);
                 } else {
-                    element.textContent = Math.floor(current);
+                    element.textContent = `${Math.floor(current)}${suffix}`;
                 }
             }, 16);
         }
@@ -124,9 +124,9 @@
                     const statNumber = entry.target.querySelector('.stat-number');
                     if (!statNumber.dataset.animated) {
                         if (entry.target.id === 'statDomains' || entry.target.parentElement.id === 'statDomains') {
-                            animateCounter(document.getElementById('statDomains'), 6);
+                            animateCounter(document.getElementById('statDomains'), 20, '+');
                         } else if (entry.target.id === 'statProjects' || entry.target.parentElement.id === 'statProjects') {
-                            animateCounter(document.getElementById('statProjects'), 5);
+                            animateCounter(document.getElementById('statProjects'), 50, '+');
                         }
                         statNumber.dataset.animated = 'true';
                     }
@@ -138,8 +138,8 @@
 
         // Animate counters on load if visible
         setTimeout(() => {
-            animateCounter(document.getElementById('statDomains'), 6);
-            animateCounter(document.getElementById('statProjects'), 5);
+            animateCounter(document.getElementById('statDomains'), 20, '+');
+            animateCounter(document.getElementById('statProjects'), 50, '+');
         }, 500);
 
         // ==================== SCROLL FADE ANIMATIONS ==================== 
@@ -401,18 +401,24 @@
                     message: message.value.trim()
                 };
                 try {
-                    const session = JSON.parse(sessionStorage.getItem('neuralNexusSession') || 'null');
-                    const leads = JSON.parse(localStorage.getItem('neuralNexusLeads') || '[]');
-                    const submittedAt = new Date().toISOString();
-                    leads.unshift({ id: Date.now(), userId: session?.user?.role === 'user' ? session.user.id : null, ...enquiry, status: 'New', stage: 'Quote requested', stageUpdatedAt: submittedAt, submittedAt });
-                    localStorage.setItem('neuralNexusLeads', JSON.stringify(leads));
+                    const response = await fetch('/api/leads', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(enquiry)
+                    });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.error || 'Unable to send your enquiry.');
+
+                    formSuccess.textContent = 'Your enquiry was sent successfully. We will get back to you within 24 hours.';
                     formSuccess.classList.add('show');
-                    formDraft.textContent = `Saved ${enquiry.requestType.toLowerCase()} request for ${enquiry.name}.`;
+                    formDraft.textContent = `Sent ${enquiry.requestType.toLowerCase()} request for ${enquiry.name}.`;
                     formDraft.classList.add('show');
                     contactForm.reset(); updateMessageCount();
                     setTimeout(() => formSuccess.classList.remove('show'), 5000);
                 } catch (error) {
+                    formSuccess.textContent = 'We could not send your enquiry. Please try again or contact us by phone.';
                     formDraft.textContent = error.message;
+                    formSuccess.classList.add('show');
                     formDraft.classList.add('show');
                 }
             }
